@@ -2,7 +2,57 @@
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('checkout-form');
     const completeOrderBtn = document.getElementById('complete-order');
+    const errorContainer = document.getElementById('error-container');
+    const errorMessage = errorContainer.querySelector('.error-message');
+    const errorClose = errorContainer.querySelector('.error-close');
     
+    // Rate limiting setup
+    const rateLimits = {
+        attempts: 0,
+        lastAttempt: 0,
+        maxAttempts: 5,
+        timeWindow: 60000, // 1 minute
+        cooldown: 300000   // 5 minutes
+    };
+
+    // Error message handling
+    function showError(message) {
+        errorMessage.textContent = message;
+        errorContainer.classList.add('show');
+        setTimeout(() => {
+            errorContainer.classList.remove('show');
+        }, 5000);
+    }
+
+    errorClose.addEventListener('click', () => {
+        errorContainer.classList.remove('show');
+    });
+
+    // Rate limiting check
+    function checkRateLimit() {
+        const now = Date.now();
+        
+        // Reset attempts if time window has passed
+        if (now - rateLimits.lastAttempt > rateLimits.timeWindow) {
+            rateLimits.attempts = 0;
+        }
+
+        // Check if in cooldown
+        if (rateLimits.attempts >= rateLimits.maxAttempts) {
+            const remainingCooldown = Math.ceil((rateLimits.lastAttempt + rateLimits.cooldown - now) / 1000);
+            if (remainingCooldown > 0) {
+                showError(`Too many attempts. Please try again in ${Math.ceil(remainingCooldown / 60)} minutes.`);
+                return false;
+            }
+            // Reset after cooldown
+            rateLimits.attempts = 0;
+        }
+
+        rateLimits.attempts++;
+        rateLimits.lastAttempt = now;
+        return true;
+    }
+
     // Form field formatting
     const cardNumberInput = document.getElementById('card-number');
     const expiryInput = document.getElementById('expiry');
@@ -29,52 +79,71 @@ document.addEventListener('DOMContentLoaded', function() {
         e.target.value = e.target.value.replace(/[^0-9]/g, '');
     });
 
-    // Form validation
+    // Enhanced form validation with specific error messages
     function validateForm() {
         const email = document.getElementById('email').value;
         const cardNumber = document.getElementById('card-number').value.replace(/\s/g, '');
         const expiry = document.getElementById('expiry').value;
         const cvc = document.getElementById('cvc').value;
         
-        // Basic email validation
+        // Email validation with detailed error
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
-            alert('Please enter a valid email address');
+            showError('Please enter a valid email address (example@domain.com)');
             return false;
         }
 
-        // Card number validation (basic length check)
+        // Card number validation with specific error
         if (cardNumber.length < 13 || cardNumber.length > 19) {
-            alert('Please enter a valid card number');
+            showError('Please enter a valid credit card number (13-19 digits)');
             return false;
         }
 
-        // Expiry validation
+        // Expiry validation with format check
         if (expiry.length !== 7) { // MM / YY format
-            alert('Please enter a valid expiry date');
+            showError('Please enter a valid expiry date (MM / YY)');
             return false;
         }
 
-        // CVC validation
+        const [month, year] = expiry.split('/').map(part => part.trim());
+        const currentYear = new Date().getFullYear() % 100;
+        const currentMonth = new Date().getMonth() + 1;
+        
+        if (parseInt(month) < 1 || parseInt(month) > 12) {
+            showError('Please enter a valid month (01-12)');
+            return false;
+        }
+
+        if (parseInt(year) < currentYear || (parseInt(year) === currentYear && parseInt(month) < currentMonth)) {
+            showError('This card has expired. Please use a valid card');
+            return false;
+        }
+
+        // CVC validation with card-specific length
         if (cvc.length < 3 || cvc.length > 4) {
-            alert('Please enter a valid security code');
+            showError('Please enter a valid security code (3-4 digits)');
             return false;
         }
 
         return true;
     }
 
-    // Handle form submission
+    // Handle form submission with rate limiting
     form.addEventListener('submit', async function(e) {
         e.preventDefault();
         
+        // Check rate limiting first
+        if (!checkRateLimit()) {
+            return;
+        }
+
         if (!validateForm()) {
             return;
         }
 
         // Change button state
         completeOrderBtn.disabled = true;
-        completeOrderBtn.innerHTML = 'Processing...';
+        completeOrderBtn.innerHTML = '<span class="spinner"></span> Processing...';
 
         try {
             // Collect form data
@@ -84,8 +153,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 country: formData.get('country'),
                 state: formData.get('state'),
                 zip: formData.get('zip'),
-                paymentMethod: formData.get('payment-method'),
-                // Add card details here for Stripe processing
                 cardNumber: formData.get('card-number').replace(/\s/g, ''),
                 expiry: formData.get('expiry'),
                 cvc: formData.get('cvc'),
@@ -93,12 +160,25 @@ document.addEventListener('DOMContentLoaded', function() {
                 billingZip: formData.get('billing-zip')
             };
 
-            // TODO: Replace with your Stripe API integration
             await processPayment(orderData);
             
         } catch (error) {
             console.error('Payment error:', error);
-            alert('There was an error processing your payment. Please try again.');
+            
+            // Show user-friendly error message based on error type
+            let errorMessage = 'There was an error processing your payment.';
+            
+            if (error.message.includes('card_declined')) {
+                errorMessage = 'Your card was declined. Please try a different card.';
+            } else if (error.message.includes('insufficient_funds')) {
+                errorMessage = 'Insufficient funds. Please try a different card.';
+            } else if (error.message.includes('expired_card')) {
+                errorMessage = 'This card has expired. Please use a different card.';
+            } else if (error.message.includes('invalid_number')) {
+                errorMessage = 'Invalid card number. Please check and try again.';
+            }
+            
+            showError(errorMessage);
             
             // Reset button state
             completeOrderBtn.disabled = false;
@@ -115,21 +195,18 @@ document.addEventListener('DOMContentLoaded', function() {
             // Redirect to Stripe Checkout
             const { error } = await stripe.redirectToCheckout({
                 lineItems: [{
-                    // You need to create this price ID in your Stripe Dashboard
-                    // Go to Products > Add Product > "Pest Control Profit Blueprint" > $19.00
-                    price: 'price_1RopW2E0kqXEH6TmBfvAeNmX', // Correct Price ID from Stripe Dashboard
+                    price: 'price_1RopW2E0kqXEH6TmBfvAeNmX',
                     quantity: 1,
                 }],
                 mode: 'payment',
                 successUrl: window.location.origin + '/thank-you.html',
                 cancelUrl: window.location.origin + '/checkout.html',
                 customerEmail: orderData.email,
-                // Pre-fill billing info
                 billingAddressCollection: 'required',
             });
 
             if (error) {
-                throw new Error(error.message);
+                throw error;
             }
 
         } catch (error) {
