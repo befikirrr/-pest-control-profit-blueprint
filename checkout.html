@@ -31,6 +31,32 @@
         </div>
 
         <div class="checkout-content">
+            <!-- Product Preview for Mobile -->
+            <div class="mobile-product-preview">
+                <div class="product-preview">
+                    <div class="book-cover">
+                        <div class="book-cover-content">
+                            <h3 class="book-title">PEST CONTROL</h3>
+                            <h4 class="book-subtitle">PROFIT BLUEPRINT</h4>
+                            <p class="book-description">Get More High-Paying Jobs Than You Can Handle</p>
+                            <div class="book-author">Your Complete Guide</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="order-summary">
+                    <div class="summary-item">
+                        <span class="item-name">Pest Control Profit Blueprint</span>
+                        <span class="item-price">$19</span>
+                    </div>
+                    <div class="total-section">
+                        <div class="total-label">Total payment</div>
+                        <div class="total-price">$19</div>
+                    </div>
+                    <div class="pricing-note">All prices in USD</div>
+                </div>
+            </div>
+
             <div class="checkout-form">
                 <form id="checkout-form">
                     <!-- Contact Information -->
@@ -68,18 +94,9 @@
                     <div class="form-section">
                         <h2 class="section-title">Payment information</h2>
                         
-                        <div class="payment-method">
-                            <input type="radio" id="card" name="payment-method" value="card" checked>
-                            <label for="card">
-                                <span class="payment-icon">💳</span>
-                                Card
-                            </label>
-                        </div>
-
                         <div class="secure-checkout">
                             <span class="secure-icon">🔒</span>
-                            <span>Secure, 1-click checkout with Link</span>
-                            <button type="button" class="link-dropdown">▼</button>
+                            <span>Secure checkout with Stripe</span>
                         </div>
 
                         <div class="form-group">
@@ -123,46 +140,6 @@
                             </div>
                         </div>
 
-                        <!-- Alternative Payment Methods -->
-                        <div class="alt-payments">
-                            <div class="payment-method">
-                                <input type="radio" id="apple-pay" name="payment-method" value="apple-pay">
-                                <label for="apple-pay">
-                                    <span class="payment-icon">🍎</span>
-                                    Apple Pay
-                                </label>
-                            </div>
-                            <div class="payment-method">
-                                <input type="radio" id="amazon-pay" name="payment-method" value="amazon-pay">
-                                <label for="amazon-pay">
-                                    <span class="payment-icon">📦</span>
-                                    Amazon Pay
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Bonus Sections -->
-                    <div class="bonus-section">
-                        <div class="bonus-header">
-                            <span class="bonus-arrow">👉</span>
-                            <span class="bonus-text">Don't miss this amazing offer!</span>
-                        </div>
-                        <div class="bonus-content">
-                            <h3 class="bonus-title">BONUS: Get 1000+ Local Business Directories To Rank Higher on Google</h3>
-                            <p class="bonus-description">Niche directories where you can promote for free + rank your website higher</p>
-                        </div>
-                    </div>
-
-                    <div class="bonus-section">
-                        <div class="bonus-header">
-                            <span class="bonus-arrow">👉</span>
-                            <span class="bonus-text">Don't miss this amazing offer!</span>
-                        </div>
-                        <div class="bonus-content">
-                            <h3 class="bonus-title">BONUS 2: Unlock Our Full PR & Backlink Process To Rank 1</h3>
-                            <p class="bonus-description">How we secure placements on powerful blogs and media brands to rank 100s of clients 1 on Google.</p>
-                        </div>
                     </div>
 
                     <!-- Complete Order Button -->
@@ -174,12 +151,12 @@
                         <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCA0MCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjI0IiByeD0iNCIgZmlsbD0iI0VCMDAxQiIvPgo8L3N2Zz4K" alt="Mastercard">
                         <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCA0MCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjI0IiByeD0iNCIgZmlsbD0iIzAwNkZDRiIvPgo8L3N2Zz4K" alt="American Express">
                         <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCA0MCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjI0IiByeD0iNCIgZmlsbD0iI0ZGNTUwMCIvPgo8L3N2Zz4K" alt="Discover">
-                        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCA0MCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjI0IiByeD0iNCIgZmlsbD0iIzAwMzA4NyIvPgo8L3N2Zz4K" alt="PayPal">
                     </div>
                 </form>
             </div>
 
-            <div class="checkout-sidebar">
+            <!-- Desktop Product Preview -->
+            <div class="desktop-product-preview">
                 <div class="product-preview">
                     <div class="book-cover">
                         <div class="book-cover-content">
