@@ -108,32 +108,9 @@
                             <span>Secure checkout with Stripe</span>
                         </div>
 
-                        <div class="form-group">
-                            <label for="card-number">Card number</label>
-                            <div class="card-input-container">
-                                <input type="text" id="card-number" name="card-number" placeholder="1234 1234 1234 1234" required>
-                                <div class="card-icons">
-                                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAzMiAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjIwIiByeD0iNCIgZmlsbD0iIzAwNTFBNSIvPgo8L3N2Zz4K" alt="Visa">
-                                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAzMiAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjIwIiByeD0iNCIgZmlsbD0iI0VCMDAxQiIvPgo8L3N2Zz4K" alt="Mastercard">
-                                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAzMiAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjIwIiByeD0iNCIgZmlsbD0iIzAwNkZDRiIvPgo8L3N2Zz4K" alt="American Express">
-                                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAzMiAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjIwIiByeD0iNCIgZmlsbD0iI0ZGNTUwMCIvPgo8L3N2Zz4K" alt="Discover">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="expiry">Expiration date</label>
-                                <input type="text" id="expiry" name="expiry" placeholder="MM / YY" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="cvc">Security code</label>
-                                <div class="cvc-container">
-                                    <input type="text" id="cvc" name="cvc" placeholder="CVC" required>
-                                    <span class="cvc-icon">?</span>
-                                </div>
-                            </div>
-                        </div>
+                        <!-- Stripe Elements will mount here -->
+                        <div id="card-element"></div>
+                        <div id="card-errors" role="alert"></div>
 
                         <div class="form-row">
                             <div class="form-group">
@@ -148,7 +125,6 @@
                                 <input type="text" id="billing-zip" name="billing-zip" placeholder="12345" required>
                             </div>
                         </div>
-
                     </div>
 
                     <!-- Complete Order Button -->
