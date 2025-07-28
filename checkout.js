@@ -187,7 +187,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Initialize Stripe with your publishable key
-    const stripe = Stripe('pk_live_51POK99E0kqXEH6TmAwB25sol4cgZsuAgsmnr8I0n90sQZq77lZzj1bsTjhUej2hk4XiaLKuBB9ytRUnQkPnK3bKV00lksHKLjC');
+    // Use test key for development, switch to live key in production
+    const stripe = Stripe('pk_test_51POK99E0kqXEH6TmAwB25sol4cgZsuAgsmnr8I0n90sQZq77lZzj1bsTjhUej2hk4XiaLKuBB9ytRUnQkPnK3bKV00lksHKLjC');
 
     // Real Stripe payment processing
     async function processPayment(orderData) {
@@ -195,7 +196,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Redirect to Stripe Checkout
             const { error } = await stripe.redirectToCheckout({
                 lineItems: [{
-                    price: 'price_1RopW2E0kqXEH6TmBfvAeNmX',
+                    price: 'price_1RpeujE0kqXEH6Tm1gVa2y1d',
                     quantity: 1,
                 }],
                 mode: 'payment',
