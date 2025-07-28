@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const errorClose = errorContainer.querySelector('.error-close');
     
     // Initialize Stripe with your publishable key
-    const stripe = Stripe('pk_test_51POK99E0kqXEH6TmjsMob8lEFNqxfdzBi1h82QhLIDhys4TDjx69WhADaeAPyRy3Rix3qOrVTpYrOcQvcIl57nXH00pjjgMZZp');
+    const stripe = Stripe('pk_live_51POK99E0kqXEH6TmAwB25sol4cgZsuAgsmnr8I0n90sQZq77lZzj1bsTjhUej2hk4XiaLKuBB9ytRUnQkPnK3bKV00lksHKLjC');
     const elements = stripe.elements();
 
     // Create and mount the card element
