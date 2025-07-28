@@ -1,0 +1,9 @@
+{
+  "name": "pest-control-profit-blueprint",
+  "version": "1.0.0",
+  "description": "Pest Control Profit Blueprint Sales Page",
+  "main": "index.js",
+  "dependencies": {
+    "stripe": "^13.11.0"
+  }
+} 

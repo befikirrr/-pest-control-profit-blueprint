@@ -125,9 +125,31 @@ document.addEventListener('DOMContentLoaded', function() {
                 throw error;
             }
 
-            // Here you would typically send the paymentMethod.id to your server
-            // For testing, we'll simulate a successful payment
-            console.log('Payment successful!', paymentMethod);
+            // Create payment intent
+            const response = await fetch('/.netlify/functions/create-payment-intent', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    paymentMethodId: paymentMethod.id,
+                    priceId: 'price_1RopW2E0kqXEH6TmBfvAeNmX',
+                    email: document.getElementById('email').value
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('Payment failed. Please try again.');
+            }
+
+            const result = await response.json();
+
+            if (result.error) {
+                throw new Error(result.error.message);
+            }
+
+            // Handle successful payment
+            console.log('Payment successful!', result);
             window.location.href = 'thank-you.html';
 
         } catch (error) {
